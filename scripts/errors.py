@@ -26,7 +26,7 @@ def process_drifter(d):
     """
 
     if 'alpha_real' in d.variables:
-        adjusted = calculated_adjusted_bearing(d)
+        adjusted = calculate_adjusted_current(d)
         d['ueast_adjusted'] = xr.DataArray(adjusted.real, dims=('time'))
         d['vnorth_adjusted'] = xr.DataArray(adjusted.imag, dims=('time'))
     d = append_speed_and_bearing(d)
