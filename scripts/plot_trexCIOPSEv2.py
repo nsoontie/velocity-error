@@ -25,6 +25,8 @@ def main():
     else:
         with open(pickle_file, 'rb') as f:
             dfall = pickle.load(f)
+    print(dfall.mean())
+    print(dfall.std())
     fig, ax = plt.subplots(1, 1, figsize=(15,5))
     mesh = plot_error_map(dfall, ax, error='speed_adjusted_error')
     cbar = plt.colorbar(mesh, ax=ax)
