@@ -40,7 +40,7 @@ def main():
         else:
             with open(pickle_file, 'rb') as f:
                 dfall = pickle.load(f)
-        stats = dfall.agg(['mean', 'std']).transpose()
+        stats = dfall.agg(['mean', 'std', 'var']).transpose()
         stats.to_csv('{}.txt'.format(exp))
         error_labels = ['adjusted speed - drifter speed [m/s]',
                         'adjusted speed relative error',
@@ -73,9 +73,15 @@ def main():
             ax.set_title(model, fontsize=FS)
             fig.savefig('figures/{}-{}.png'.format(exp, title), bbox_inches='tight')
             fig, ax = plt.subplots(1,1)
+            ylim=[0,7000]
             plot_histogram(error_var, ax, bins=bins)
             ax.set_xlabel(error_label)
             ax.set_title(model)
+            if 'relative' not in error_label:
+                sd = np.nanstd(error_var)
+                ax.plot([sd, sd], ylim, '--k')
+                ax.plot([-sd, -sd], ylim, '--k')
+                ax.set_ylim(ylim)
             fig.savefig('figures/hist_{}-{}.png'.format(exp, title), bbox_inches='tight')
         # Data density plots
         fig, ax = plt.subplots(1, 1, figsize=(15,5))
